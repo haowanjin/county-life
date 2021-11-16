@@ -1,153 +1,297 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ddup.county.life.mapper.CountyUserMapper">
-  <resultMap id="BaseResultMap" type="com.ddup.county.life.entity.CountyUser">
-    <id column="code" jdbcType="VARCHAR" property="code" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
-    <result column="pay_pwd" jdbcType="VARCHAR" property="payPwd" />
-    <result column="union_id" jdbcType="VARCHAR" property="unionId" />
-    <result column="wx_header" jdbcType="VARCHAR" property="wxHeader" />
-    <result column="wx_header_url" jdbcType="VARCHAR" property="wxHeaderUrl" />
-    <result column="address" jdbcType="VARCHAR" property="address" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    code, name, telephone, pay_pwd, union_id, wx_header, wx_header_url, address, create_time, 
+<mapper namespace="com.ddup.county.life.mapper.customer.CountyUserCustomerMapper">
+    <resultMap id="BaseResultMap" type="com.ddup.county.life.entity.CountyUser">
+        <id column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="telephone" jdbcType="VARCHAR" property="telephone"/>
+        <result column="pay_pwd" jdbcType="VARCHAR" property="payPwd"/>
+        <result column="union_id" jdbcType="VARCHAR" property="unionId"/>
+        <result column="wx_header" jdbcType="VARCHAR" property="wxHeader"/>
+        <result column="wx_header_url" jdbcType="VARCHAR" property="wxHeaderUrl"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        code
+        , name, telephone, pay_pwd, union_id, wx_header, wx_header_url, address, create_time,
     update_time
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from county_user
-    where code = #{code,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from county_user
-    where code = #{code,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.ddup.county.life.entity.CountyUser">
-    insert into county_user (code, name, telephone, 
-      pay_pwd, union_id, wx_header, 
-      wx_header_url, address, create_time, 
-      update_time)
-    values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
-      #{payPwd,jdbcType=VARCHAR}, #{unionId,jdbcType=VARCHAR}, #{wxHeader,jdbcType=VARCHAR}, 
-      #{wxHeaderUrl,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
-  </insert>
-  <insert id="insertSelective" parameterType="com.ddup.county.life.entity.CountyUser">
-    insert into county_user
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="code != null">
-        code,
-      </if>
-      <if test="name != null">
-        name,
-      </if>
-      <if test="telephone != null">
-        telephone,
-      </if>
-      <if test="payPwd != null">
-        pay_pwd,
-      </if>
-      <if test="unionId != null">
-        union_id,
-      </if>
-      <if test="wxHeader != null">
-        wx_header,
-      </if>
-      <if test="wxHeaderUrl != null">
-        wx_header_url,
-      </if>
-      <if test="address != null">
-        address,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="updateTime != null">
-        update_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="code != null">
-        #{code,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="telephone != null">
-        #{telephone,jdbcType=VARCHAR},
-      </if>
-      <if test="payPwd != null">
-        #{payPwd,jdbcType=VARCHAR},
-      </if>
-      <if test="unionId != null">
-        #{unionId,jdbcType=VARCHAR},
-      </if>
-      <if test="wxHeader != null">
-        #{wxHeader,jdbcType=VARCHAR},
-      </if>
-      <if test="wxHeaderUrl != null">
-        #{wxHeaderUrl,jdbcType=VARCHAR},
-      </if>
-      <if test="address != null">
-        #{address,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.ddup.county.life.entity.CountyUser">
-    update county_user
-    <set>
-      <if test="name != null">
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="telephone != null">
-        telephone = #{telephone,jdbcType=VARCHAR},
-      </if>
-      <if test="payPwd != null">
-        pay_pwd = #{payPwd,jdbcType=VARCHAR},
-      </if>
-      <if test="unionId != null">
-        union_id = #{unionId,jdbcType=VARCHAR},
-      </if>
-      <if test="wxHeader != null">
-        wx_header = #{wxHeader,jdbcType=VARCHAR},
-      </if>
-      <if test="wxHeaderUrl != null">
-        wx_header_url = #{wxHeaderUrl,jdbcType=VARCHAR},
-      </if>
-      <if test="address != null">
-        address = #{address,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where code = #{code,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.ddup.county.life.entity.CountyUser">
-    update county_user
-    set name = #{name,jdbcType=VARCHAR},
-      telephone = #{telephone,jdbcType=VARCHAR},
-      pay_pwd = #{payPwd,jdbcType=VARCHAR},
-      union_id = #{unionId,jdbcType=VARCHAR},
-      wx_header = #{wxHeader,jdbcType=VARCHAR},
-      wx_header_url = #{wxHeaderUrl,jdbcType=VARCHAR},
-      address = #{address,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
-    where code = #{code,jdbcType=VARCHAR}
-  </update>
+    </sql>
+    <select id="selectByExample" parameterType="com.ddup.county.life.entity.CountyUserExample"
+            resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from county_user
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from county_user
+        where code = #{code,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
+        from county_user
+        where code = #{code,jdbcType=VARCHAR}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.ddup.county.life.entity.CountyUserExample">
+        delete from county_user
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.ddup.county.life.entity.CountyUser">
+        insert into county_user (code, name, telephone,
+                                 pay_pwd, union_id, wx_header,
+                                 wx_header_url, address, create_time,
+                                 update_time)
+        values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR},
+                #{payPwd,jdbcType=VARCHAR}, #{unionId,jdbcType=VARCHAR}, #{wxHeader,jdbcType=VARCHAR},
+                #{wxHeaderUrl,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+                #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.ddup.county.life.entity.CountyUser">
+        insert into county_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="code != null">
+                code,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="telephone != null">
+                telephone,
+            </if>
+            <if test="payPwd != null">
+                pay_pwd,
+            </if>
+            <if test="unionId != null">
+                union_id,
+            </if>
+            <if test="wxHeader != null">
+                wx_header,
+            </if>
+            <if test="wxHeaderUrl != null">
+                wx_header_url,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="code != null">
+                #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="telephone != null">
+                #{telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="payPwd != null">
+                #{payPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="unionId != null">
+                #{unionId,jdbcType=VARCHAR},
+            </if>
+            <if test="wxHeader != null">
+                #{wxHeader,jdbcType=VARCHAR},
+            </if>
+            <if test="wxHeaderUrl != null">
+                #{wxHeaderUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.ddup.county.life.entity.CountyUserExample"
+            resultType="java.lang.Long">
+        select count(*) from county_user
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update county_user
+        <set>
+            <if test="record.code != null">
+                code = #{record.code,jdbcType=VARCHAR},
+            </if>
+            <if test="record.name != null">
+                name = #{record.name,jdbcType=VARCHAR},
+            </if>
+            <if test="record.telephone != null">
+                telephone = #{record.telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="record.payPwd != null">
+                pay_pwd = #{record.payPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="record.unionId != null">
+                union_id = #{record.unionId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.wxHeader != null">
+                wx_header = #{record.wxHeader,jdbcType=VARCHAR},
+            </if>
+            <if test="record.wxHeaderUrl != null">
+                wx_header_url = #{record.wxHeaderUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="record.address != null">
+                address = #{record.address,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update county_user
+        set code = #{record.code,jdbcType=VARCHAR},
+        name = #{record.name,jdbcType=VARCHAR},
+        telephone = #{record.telephone,jdbcType=VARCHAR},
+        pay_pwd = #{record.payPwd,jdbcType=VARCHAR},
+        union_id = #{record.unionId,jdbcType=VARCHAR},
+        wx_header = #{record.wxHeader,jdbcType=VARCHAR},
+        wx_header_url = #{record.wxHeaderUrl,jdbcType=VARCHAR},
+        address = #{record.address,jdbcType=VARCHAR},
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ddup.county.life.entity.CountyUser">
+        update county_user
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="telephone != null">
+                telephone = #{telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="payPwd != null">
+                pay_pwd = #{payPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="unionId != null">
+                union_id = #{unionId,jdbcType=VARCHAR},
+            </if>
+            <if test="wxHeader != null">
+                wx_header = #{wxHeader,jdbcType=VARCHAR},
+            </if>
+            <if test="wxHeaderUrl != null">
+                wx_header_url = #{wxHeaderUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where code = #{code,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ddup.county.life.entity.CountyUser">
+        update county_user
+        set name          = #{name,jdbcType=VARCHAR},
+            telephone     = #{telephone,jdbcType=VARCHAR},
+            pay_pwd       = #{payPwd,jdbcType=VARCHAR},
+            union_id      = #{unionId,jdbcType=VARCHAR},
+            wx_header     = #{wxHeader,jdbcType=VARCHAR},
+            wx_header_url = #{wxHeaderUrl,jdbcType=VARCHAR},
+            address       = #{address,jdbcType=VARCHAR},
+            create_time   = #{createTime,jdbcType=TIMESTAMP},
+            update_time   = #{updateTime,jdbcType=TIMESTAMP}
+        where code = #{code,jdbcType=VARCHAR}
+    </update>
 </mapper>

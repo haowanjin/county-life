@@ -42,8 +42,7 @@
         <!--mybatis generator代码生成器在默认的情况下会生成对于表实体类的一个Examle类, 可以更改生成器的配置可避免生成Examle类,
         enableCountByExample,enableUpdateByExample,enableDeleteByExample,enableSelectByExample等配置为false后, 就不会生成生成Examle类了 -->
 
-        <table tableName="county_user" enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
+        <table tableName="county_user"/>
 
         <!--或者直接写表名-->
         <table tableName="county_user_token" enableCountByExample="false" enableUpdateByExample="false"

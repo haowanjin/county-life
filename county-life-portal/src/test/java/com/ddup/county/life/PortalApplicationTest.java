@@ -1,13 +1,14 @@
 package com.ddup.county.life;
 
-import cn.hutool.core.lang.UUID;
-import cn.hutool.core.util.RandomUtil;
 import com.ddup.county.life.entity.CountyUser;
-import com.ddup.county.life.mapper.CountyUserMapper;
+import com.ddup.county.life.mapper.customer.CountyUserCustomerMapper;
+import com.ddup.county.life.service.UserServiceImpl;
 import com.ddup.county.life.uitl.RedisUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
 
 /**
  * @author: hwj
@@ -21,7 +22,10 @@ public class PortalApplicationTest {
     private RedisUtil redisUtil;
 
     @Autowired
-    private CountyUserMapper userMapper;
+    private CountyUserCustomerMapper userMapper;
+
+    @Autowired
+    private UserServiceImpl userService;
 
     @Test
     void testRedis() {
@@ -35,13 +39,15 @@ public class PortalApplicationTest {
     @Test
     void testUserMapper() {
         CountyUser user = new CountyUser();
-        user.setCode(RandomUtil.randomStringUpper(16));
+        // user.setCode(RandomUtil.randomStringUpper(16));
         user.setName("张三丰");
-        user.setTelephone("18883832322");
+        /*user.setTelephone("18883832322");
         user.setUnionId("DASADS");
 
         userMapper.insert(user);
-
+*/
+        List<CountyUser> countyUsers = userService.queryUserByParams(user);
+        System.out.printf("listSize=%s \n", countyUsers.size());
         System.out.println(userMapper.selectByPrimaryKey("YEMIII76OVE209E2"));
     }
 }
