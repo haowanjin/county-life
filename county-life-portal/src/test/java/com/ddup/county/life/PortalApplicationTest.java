@@ -5,8 +5,10 @@ import com.ddup.county.life.mapper.customer.CountyUserCustomerMapper;
 import com.ddup.county.life.service.UserServiceImpl;
 import com.ddup.county.life.uitl.RedisUtil;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
@@ -17,6 +19,7 @@ import java.util.List;
  */
 
 @SpringBootTest
+@RunWith(SpringRunner.class)
 public class PortalApplicationTest {
     @Autowired
     private RedisUtil redisUtil;

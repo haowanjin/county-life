@@ -18,18 +18,22 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class ControllerLogAspect {
     public static final Logger logger = LoggerFactory.getLogger(ControllerLogAspect.class);
-    @Autowired
     Gson gson;
 
+    @Autowired
+    public ControllerLogAspect(Gson gson) {
+        this.gson = gson;
+    }
+
     @Around("execution(* com.ddup.county.life.controller.*.*(..))")
-    public String handleControllerMethod(ProceedingJoinPoint pjp) {
+    public Object handleControllerMethod(ProceedingJoinPoint pjp) {
         Stopwatch stopwatch = Stopwatch.createStarted();
 
-        String resultEntity = null;
+        Object resultEntity = null;
         try {
-            logger.info("执行Controller开始: {} 参数：{}", pjp.getSignature(), Lists.newArrayList(pjp.getArgs()));
-            resultEntity = (String) pjp.proceed(pjp.getArgs());
-            logger.info("执行Controller结束: {}" + pjp.getSignature());
+            logger.info("执行Controller开始: {} 参数：{}", pjp.getSignature(), gson.toJson(pjp.getArgs()));
+            resultEntity = pjp.proceed(pjp.getArgs());
+            logger.info("执行Controller结束: {}", pjp.getSignature());
             logger.info("耗时：{} (毫秒).\n\n", stopwatch.stop().elapsed(TimeUnit.MILLISECONDS));
         }
         //只捕获PresentException + UserException + Exception
@@ -48,13 +52,13 @@ public class ControllerLogAspect {
     }
 
     @Around("@annotation(com.ddup.county.life.annotation.ExceptionLog)")
-    public CommonDTO handleServiceMethod(ProceedingJoinPoint pjp) {
+    public Object handleServiceMethod(ProceedingJoinPoint pjp) {
         Stopwatch stopwatch = Stopwatch.createStarted();
 
-        CommonDTO resultEntity = null;
+        Object resultEntity = null;
         try {
             logger.info("执行Controller开始: {} 参数：{}", pjp.getSignature(), Lists.newArrayList(pjp.getArgs()));
-            resultEntity = (CommonDTO) pjp.proceed(pjp.getArgs());
+            resultEntity = pjp.proceed(pjp.getArgs());
             logger.info("执行Controller结束: {}" + pjp.getSignature());
             logger.info("耗时：{}", stopwatch.stop().elapsed(TimeUnit.MILLISECONDS), "(毫秒).");
         }
@@ -67,21 +71,21 @@ public class ControllerLogAspect {
         } catch (ConponRecordException e) {
             logger.error("异常{方法：" + pjp.getSignature() + "， 参数：" + pjp.getArgs() + ",异常：" + e.getMessage() + "}", e);
             resultEntity = new CommonDTO("-1", "服务器开小差，请稍后再试！");
-        } */catch (Throwable throwable) {
+        } */ catch (Throwable throwable) {
             resultEntity = handlerException(pjp, throwable, null);
         }
         return resultEntity;
     }
 
-    private String handlerException(ProceedingJoinPoint pjp, Throwable e) {
-        CommonDTO result = new CommonDTO("-1", "服务器开小差，请稍后再试");
-        logger.error("异常{方法：" + pjp.getSignature() + "， 参数：" + pjp.getArgs() + ",异常：" + e.getMessage() + "}", e);
-        return gson.toJson(result);
+    private Object handlerException(ProceedingJoinPoint pjp, Throwable e) {
+        CommonDTO result = CommonDTO.fail("-1", "服务器开小差，请稍后再试");
+        logger.error("异常{方法：" + pjp.getSignature() + "， 参数：" + gson.toJson(pjp.getArgs()) + ",异常：" + e.getMessage() + "}", e);
+        return result;
     }
 
-    private CommonDTO handlerException(ProceedingJoinPoint pjp, Throwable e, String param) {
-        CommonDTO result = new CommonDTO("-1", "服务器开小差，请稍后再试");
-        logger.error("异常{方法：" + pjp.getSignature() + "， 参数：" + pjp.getArgs() + ",异常：" + e.getMessage() + "}", e);
+    private Object handlerException(ProceedingJoinPoint pjp, Throwable e, String param) {
+        Object result = CommonDTO.fail("-1", "服务器开小差，请稍后再试");
+        logger.error("异常{方法：" + pjp.getSignature() + "， 参数：" + gson.toJson(pjp.getArgs()) + ",异常：" + e.getMessage() + "}", e);
         return result;
     }
 }

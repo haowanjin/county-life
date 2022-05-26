@@ -2,10 +2,12 @@ package com.ddup.county.life.mapper;
 
 import com.ddup.county.life.entity.CountyUser;
 import com.ddup.county.life.entity.CountyUserExample;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+@Mapper
 public interface CountyUserMapper {
     long countByExample(CountyUserExample example);
 
